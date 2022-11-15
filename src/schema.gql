@@ -1,0 +1,20 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  helloWorld: String!
+}
+
+type Mutation {
+  RegisterUser(input: CreateUserInput!): Boolean!
+}
+
+input CreateUserInput {
+  dni: String!
+  username: String!
+  email: String!
+  password: String!
+  name: String!
+  lastname: String!
+}
