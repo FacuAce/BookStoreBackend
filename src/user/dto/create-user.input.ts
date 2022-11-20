@@ -8,9 +8,6 @@ export class CreateUserInput {
   dni: string;
   @Field()
   @IsNotEmpty()
-  username: string;
-  @Field()
-  @IsNotEmpty()
   @IsEmail()
   email: string;
   @Field()
@@ -18,7 +15,7 @@ export class CreateUserInput {
   password: string;
   @Field()
   @IsNotEmpty()
-  name: string;
+  firstname: string;
   @Field()
   @IsNotEmpty()
   lastname: string;

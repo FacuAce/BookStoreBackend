@@ -2,19 +2,119 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
+type User {
+  id: Int!
+  dni: String!
+  email: String!
+  firstname: String!
+  lastname: String!
+  active: Boolean!
+  its: DateTime!
+  uts: DateTime
+  dts: DateTime
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Role {
+  id: Int!
+  name: String!
+  description: String
+  its: DateTime!
+  uts: DateTime
+  dts: DateTime
+}
+
+type RoleUser {
+  user: User!
+  role: Role!
+  userId: Int!
+  roleId: Int!
+  its: DateTime!
+  dts: DateTime
+}
+
+type Book {
+  author: User!
+  userId: Int!
+  name: String!
+  descripcion: String!
+  status: String!
+  its: DateTime!
+  dts: DateTime
+}
+
 type Query {
   helloWorld: String!
+  getUsers: [User!]!
+  getRoles: [Role!]!
+  getRolesUserByUserId(userId: Int!): [RoleUser!]!
+  getBooks: [Book!]!
 }
 
 type Mutation {
-  RegisterUser(input: CreateUserInput!): Boolean!
+  registerUser(input: CreateUserInput!): Boolean!
+  updateUser(id: Int!, input: UpdateUserInput!): User!
+  createRole(input: CreateRoleInput!): Boolean!
+  updateRole(id: Int!, input: UpdateRoleInput!): Boolean!
+  deleteRole(id: Int!): Boolean!
+  createRoleUser(input: CreateRoleUserInput!): Boolean!
+  deleteRoleUser(id: RoleUserUserIdRoleIdCompoundUniqueInput!): Boolean!
+  createBook(input: CreateBookInput!): Boolean!
+  updateBook(id: Int!, input: UpdateBookInput!): Boolean!
+  deleteBook(id: Int!): Boolean!
 }
 
 input CreateUserInput {
   dni: String!
-  username: String!
   email: String!
   password: String!
-  name: String!
+  firstname: String!
   lastname: String!
+}
+
+input UpdateUserInput {
+  dni: String
+  email: String
+  password: String
+  firstname: String
+  lastname: String
+  status: String
+}
+
+input CreateRoleInput {
+  name: String!
+  description: String!
+}
+
+input UpdateRoleInput {
+  name: String
+  description: String
+  status: String
+}
+
+input CreateRoleUserInput {
+  userId: Int!
+  roleId: Int!
+}
+
+input RoleUserUserIdRoleIdCompoundUniqueInput {
+  userId: Int!
+  roleId: Int!
+}
+
+input CreateBookInput {
+  name: String!
+  descripcion: String!
+  userId: Int!
+}
+
+input UpdateBookInput {
+  name: String
+  descripcion: String
+  userId: Int
+  status: String
 }
