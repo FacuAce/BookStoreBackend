@@ -3,12 +3,19 @@ import { BookService } from './book.service';
 import { Book } from './model/book.model';
 import { CreateBookInput } from './dto/create-book.input';
 import { UpdateBookInput } from './dto/update-book.input';
+import { PermissionCodes } from '@/prisma/seed/permissions.enum';
+import { IsAuthenticatedGuard } from '@/auth/session.guard';
+import { PermissionsGuard } from '@/guards/permission.guard';
+import { RequiredPermissions } from '@/decorators/permission.decorator';
+import { UseGuards } from '@nestjs/common';
 
 @Resolver(() => Book)
 export class BookResolver {
   constructor(private readonly bookService: BookService) {}
 
   @Mutation(() => Boolean)
+  @RequiredPermissions(PermissionCodes.createBook)
+  @UseGuards(IsAuthenticatedGuard, PermissionsGuard)
   async createBook(
     @Args('input', { type: () => CreateBookInput }) input: CreateBookInput,
   ) {
@@ -20,6 +27,8 @@ export class BookResolver {
   }
 
   @Mutation(() => Boolean)
+  @RequiredPermissions(PermissionCodes.updateBook)
+  @UseGuards(IsAuthenticatedGuard, PermissionsGuard)
   async updateBook(
     @Args('id', { type: () => Int }) id: number,
     @Args('input', { type: () => UpdateBookInput }) input: UpdateBookInput,
@@ -32,6 +41,8 @@ export class BookResolver {
   }
 
   @Mutation(() => Boolean)
+  @RequiredPermissions(PermissionCodes.deleteBook)
+  @UseGuards(IsAuthenticatedGuard, PermissionsGuard)
   async deleteBook(@Args('id', { type: () => Int }) id: number) {
     const result = await this.bookService.bookDelete(id);
     if (result == null) {
@@ -41,6 +52,8 @@ export class BookResolver {
   }
 
   @Query(() => [Book])
+  @RequiredPermissions(PermissionCodes.readBooks)
+  @UseGuards(IsAuthenticatedGuard, PermissionsGuard)
   async getBooks() {
     return await this.bookService.getBooks();
   }

@@ -1,6 +1,6 @@
 /* eslint-disable prettier/prettier */
 import { Prisma, PrismaClient } from '@prisma/client';
-import { SystemRoles } from './enums';
+import { SystemRoles } from './system.roles.';
 
 const seedRoles = async (prisma: PrismaClient) => {
   console.log('Seeding roles...');

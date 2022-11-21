@@ -8,7 +8,7 @@ type User {
   email: String!
   firstname: String!
   lastname: String!
-  active: Boolean!
+  status: Boolean!
   its: DateTime!
   uts: DateTime
   dts: DateTime
@@ -26,6 +26,39 @@ type Role {
   its: DateTime!
   uts: DateTime
   dts: DateTime
+}
+
+type PermissionRole {
+  permissionCode: String!
+  roleId: Int!
+  its: DateTime!
+  permission: Permission!
+  role: Role!
+}
+
+type PermissionCount {
+  PermissionRole: Int!
+}
+
+type Permission {
+  code: String!
+  shortname: String!
+  description: String
+  PermissionRole: [PermissionRole!]
+  _count: PermissionCount!
+}
+
+type AuthenticatedUser {
+  id: Int!
+  dni: String!
+  email: String!
+  firstname: String!
+  lastname: String!
+  status: Boolean!
+  its: DateTime!
+  uts: DateTime
+  dts: DateTime
+  permissions: [Permission!]!
 }
 
 type RoleUser {
@@ -50,6 +83,7 @@ type Book {
 type Query {
   helloWorld: String!
   getUsers: [User!]!
+  authenticate: AuthenticatedUser!
   getRoles: [Role!]!
   getRolesUserByUserId(userId: Int!): [RoleUser!]!
   getBooks: [Book!]!
@@ -66,6 +100,8 @@ type Mutation {
   createBook(input: CreateBookInput!): Boolean!
   updateBook(id: Int!, input: UpdateBookInput!): Boolean!
   deleteBook(id: Int!): Boolean!
+  login(dni: String!, password: String!): Boolean!
+  logout: Boolean!
 }
 
 input CreateUserInput {

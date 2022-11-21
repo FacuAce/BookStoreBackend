@@ -39,14 +39,15 @@ model User {
 }
 
 model Role {
-  id          Int        @id @default(autoincrement())
-  name        String
-  description String?
-  status      String     @default("ACTIVE")
-  its         DateTime   @default(now())
-  uts         DateTime?
-  dts         DateTime?
-  RoleUser    RoleUser[]
+  id             Int              @id @default(autoincrement())
+  name           String
+  description    String?
+  status         String           @default("ACTIVE")
+  its            DateTime         @default(now())
+  uts            DateTime?
+  dts            DateTime?
+  RoleUser       RoleUser[]
+  PermissionRole PermissionRole[]
 }
 
 model RoleUser {
@@ -58,4 +59,21 @@ model RoleUser {
   dts    DateTime?
 
   @@id([userId, roleId])
+}
+
+model Permission {
+  code           String           @id
+  shortname      String
+  description    String?
+  PermissionRole PermissionRole[]
+}
+
+model PermissionRole {
+  permissionCode String
+  roleId         Int
+  its            DateTime   @default(now())
+  permission     Permission @relation(fields: [permissionCode], references: [code])
+  role           Role       @relation(fields: [roleId], references: [id])
+
+  @@id([permissionCode, roleId])
 }

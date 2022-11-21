@@ -24,7 +24,7 @@ export class User {
   password!: string;
 
   @Field(() => Boolean, { nullable: false })
-  active!: boolean;
+  status!: string;
 
   @Field(() => Date, { nullable: false })
   its!: Date;

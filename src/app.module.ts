@@ -13,6 +13,8 @@ import { PrismaModule } from './prisma/prisma.module';
 import { RoleModule } from './role/role.module';
 import { RoleUserModule } from './role-user/role-user.module';
 import { BookModule } from './book/book.module';
+import { AuthModule } from './auth/auth.module';
+import { PermissionModule } from './permission/permission.module';
 
 @Module({
   imports: [
@@ -20,7 +22,15 @@ import { BookModule } from './book/book.module';
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
-      playground: true,
+      context: ({ req, res }) => ({ req, res }),
+      playground: {
+        settings: {
+          'request.credentials': 'include', // Permite que la sesion se guarde como cookie cuando se usa el playground
+        },
+      },
+      buildSchemaOptions: {
+        numberScalarMode: 'integer',
+      },
     }),
     HelloWorldModule,
     UserModule,
@@ -28,6 +38,8 @@ import { BookModule } from './book/book.module';
     RoleModule,
     RoleUserModule,
     BookModule,
+    AuthModule,
+    PermissionModule,
   ],
   controllers: [AppController],
   providers: [AppService],
